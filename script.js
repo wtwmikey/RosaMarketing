@@ -112,22 +112,6 @@ function initScrollAnimations() {
         observer.observe(el);
     });
 }
-
-
-// Optional: Add scroll progress indicator
-function initScrollProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-progress';
-    progressBar.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 3px;
-        background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
-        z-index: 10001;
-        transition: width 0.1s ease;
-    `;
     
     document.body.appendChild(progressBar);
     
