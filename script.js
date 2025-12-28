@@ -49,7 +49,7 @@ function initTypeformEmbed() {
     if (typeformId && typeformId !== 'YOUR_TYPEFORM_ID') {
         // Create iframe with Typeform embed
         const iframe = document.createElement('iframe');
-        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`;<div data-tf-live="01KDJRWJ1FM42RWNR2C0G3321K"></div><script src="//embed.typeform.com/next/embed.js"></script>
+        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`;
         iframe.width = '100%';
         iframe.height = '100%';
         iframe.frameBorder = '0';
@@ -75,17 +75,7 @@ function initTypeformEmbed() {
         
         embedContainer.innerHTML = '';
         embedContainer.appendChild(iframe);
-    } else {
-        // Show instructions if no Typeform ID is set
-        embedContainer.innerHTML = `
-            <div style="padding: 3rem; text-align: center; color: #cccccc;">
-                <p style="margin-bottom: 1rem;">To embed your Typeform:</p>
-                <p style="margin-bottom: 1rem; font-size: 0.875rem;">1. Get your Typeform embed URL (e.g., https://form.typeform.com/to/YOUR_FORM_ID)</p>
-                <p style="margin-bottom: 1rem; font-size: 0.875rem;">2. Open script.js</p>
-                <p style="margin-bottom: 1rem; font-size: 0.875rem;">3. Replace 'YOUR_TYPEFORM_ID' with your actual Typeform ID, or set the typeformUrl variable</p>
-            </div>
-        `;
-    }
+    } 
 }
 
 // Scroll animations
