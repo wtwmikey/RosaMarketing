@@ -17,6 +17,25 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Maintenance Mode Check - Runs immediately before page loads -->
+    <script>
+        (function() {
+            // Don't redirect if we're on maintenance or admin pages
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('maintenance.html') || currentPath.includes('admin.html')) {
+                return;
+            }
+            
+            // Check maintenance mode status from localStorage
+            const maintenanceMode = localStorage.getItem('maintenanceMode');
+            
+            if (maintenanceMode === 'true') {
+                // Redirect to maintenance page immediately
+                window.location.replace('maintenance.html');
+            }
+        })();
+    </script>
 </head>
 <body>
     <!-- Navigation -->

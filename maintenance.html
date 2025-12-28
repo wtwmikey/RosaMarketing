@@ -131,11 +131,45 @@
                 We're currently working on improving our website to serve you better. 
                 We'll be back online shortly. Thank you for your patience!
             </p>
+            <div id="status-check" style="margin-top: 2rem; padding: 1rem; background-color: var(--bg-dark-secondary); border-radius: 8px; display: none;">
+                <p style="color: var(--text-gray); font-size: 0.875rem; margin: 0;">
+                    <span id="status-text">Checking site status...</span>
+                </p>
+            </div>
             <div class="maintenance-footer">
                 <p>&copy; 2024 Rosa Marketing, All rights reserved.</p>
             </div>
         </div>
     </div>
+    
+    <script>
+        // Check if maintenance mode is still enabled
+        // If disabled, redirect back to main site
+        (function() {
+            function checkMaintenanceStatus() {
+                const maintenanceMode = localStorage.getItem('maintenanceMode');
+                
+                if (maintenanceMode !== 'true') {
+                    // Maintenance mode is off, redirect to main site
+                    window.location.replace('index.html');
+                } else {
+                    // Show status indicator
+                    const statusCheck = document.getElementById('status-check');
+                    const statusText = document.getElementById('status-text');
+                    if (statusCheck && statusText) {
+                        statusCheck.style.display = 'block';
+                        statusText.textContent = 'Maintenance mode is active. The site will be live once maintenance is disabled.';
+                    }
+                }
+            }
+            
+            // Check immediately
+            checkMaintenanceStatus();
+            
+            // Check every 5 seconds to see if maintenance mode was disabled
+            setInterval(checkMaintenanceStatus, 5000);
+        })();
+    </script>
 </body>
 </html>
 

@@ -1,19 +1,18 @@
-// Maintenance Mode Check
-// This runs immediately to check if maintenance mode is enabled
+// Maintenance Mode Check (backup - primary check is in <head> of each page)
+// This runs as a backup check in case the inline script didn't catch it
 (function() {
-    // Check if we're already on the maintenance page
-    if (window.location.pathname.includes('maintenance.html')) {
-        return; // Don't redirect if already on maintenance page
+    // Don't redirect if we're on maintenance or admin pages
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('maintenance.html') || currentPath.includes('admin.html')) {
+        return;
     }
     
     // Check maintenance mode status from localStorage
-    // To enable maintenance mode, run in browser console: localStorage.setItem('maintenanceMode', 'true')
-    // To disable maintenance mode, run in browser console: localStorage.setItem('maintenanceMode', 'false')
     const maintenanceMode = localStorage.getItem('maintenanceMode');
     
     if (maintenanceMode === 'true') {
         // Redirect to maintenance page
-        window.location.href = 'maintenance.html';
+        window.location.replace('maintenance.html');
         return;
     }
 })();
