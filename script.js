@@ -1,3 +1,23 @@
+// Maintenance Mode Check
+// This runs immediately to check if maintenance mode is enabled
+(function() {
+    // Check if we're already on the maintenance page
+    if (window.location.pathname.includes('maintenance.html')) {
+        return; // Don't redirect if already on maintenance page
+    }
+    
+    // Check maintenance mode status from localStorage
+    // To enable maintenance mode, run in browser console: localStorage.setItem('maintenanceMode', 'true')
+    // To disable maintenance mode, run in browser console: localStorage.setItem('maintenanceMode', 'false')
+    const maintenanceMode = localStorage.getItem('maintenanceMode');
+    
+    if (maintenanceMode === 'true') {
+        // Redirect to maintenance page
+        window.location.href = 'maintenance.html';
+        return;
+    }
+})();
+
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();
@@ -49,7 +69,7 @@ function initTypeformEmbed() {
     if (typeformId && typeformId !== 'YOUR_TYPEFORM_ID') {
         // Create iframe with Typeform embed
         const iframe = document.createElement('iframe');
-        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`;
+        iframe.src = `https://form.typeform.com/to/${typeformId}`;
         iframe.width = '100%';
         iframe.height = '100%';
         iframe.frameBorder = '0';
@@ -130,4 +150,30 @@ function initScrollProgress() {
 
 // Initialize scroll progress
 document.addEventListener('DOMContentLoaded', initScrollProgress);
+
+// Maintenance Mode Toggle Helper
+// Use these functions in the browser console to toggle maintenance mode:
+// 
+// Enable maintenance mode:
+//   toggleMaintenanceMode(true)
+// 
+// Disable maintenance mode:
+//   toggleMaintenanceMode(false)
+//
+// Check current status:
+//   isMaintenanceMode()
+window.toggleMaintenanceMode = function(enabled) {
+    if (enabled) {
+        localStorage.setItem('maintenanceMode', 'true');
+        console.log('Maintenance mode ENABLED. Refresh the page to see the maintenance page.');
+    } else {
+        localStorage.setItem('maintenanceMode', 'false');
+        console.log('Maintenance mode DISABLED. Refresh the page to see the normal site.');
+    }
+};
+
+window.isMaintenanceMode = function() {
+    const status = localStorage.getItem('maintenanceMode');
+    return status === 'true';
+};
 

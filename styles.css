@@ -293,7 +293,7 @@ h3 {
 /* Clients Section */
 .clients-section {
     padding: 80px 20px;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
     text-align: center;
 }
 
@@ -386,7 +386,7 @@ h3 {
 /* Services Section */
 .services {
     padding: 80px 20px;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
 }
 
 .services-grid {
@@ -468,7 +468,7 @@ th .material-icons {
 /* Results Section */
 .results-section {
     padding: 80px 20px;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
 }
 
 .results-headline {
@@ -586,7 +586,7 @@ tfoot td {
 .apply-section {
     padding: 100px 20px;
     text-align: center;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
 }
 
 .apply-headline {
@@ -599,7 +599,7 @@ tfoot td {
 /* Apply Page Header */
 .apply-header {
     padding: 20px;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
     border-bottom: 1px solid var(--border-gray);
 }
 
@@ -683,7 +683,7 @@ tfoot td {
 /* Footer */
 .footer {
     padding: 40px 20px;
-    background-color: var(--bg-dark-secondary);
+    background-color: var(--bg-dark);
     border-top: 1px solid var(--border-gray);
 }
 
