@@ -49,7 +49,8 @@ function initTypeformEmbed() {
     if (typeformId && typeformId !== 'YOUR_TYPEFORM_ID') {
         // Create iframe with Typeform embed
         const iframe = document.createElement('iframe');
-        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`
+        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`;<div data-tf-live="01KDJRWJ1FM42RWNR2C0G3321K"></div><script src="//embed.typeform.com/next/embed.js"></script>
+        iframe.width = '100%';
         iframe.height = '100%';
         iframe.frameBorder = '0';
         iframe.allow = 'microphone; camera';
@@ -112,6 +113,22 @@ function initScrollAnimations() {
         observer.observe(el);
     });
 }
+
+
+// Optional: Add scroll progress indicator
+function initScrollProgress() {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress';
+    progressBar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+        z-index: 10001;
+        transition: width 0.1s ease;
+    `;
     
     document.body.appendChild(progressBar);
     
