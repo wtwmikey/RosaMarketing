@@ -49,8 +49,7 @@ function initTypeformEmbed() {
     if (typeformId && typeformId !== 'YOUR_TYPEFORM_ID') {
         // Create iframe with Typeform embed
         const iframe = document.createElement('iframe');
-        iframe.src = `https://form.typeform.com/to/${typeformId}`;
-        iframe.width = '100%';
+        iframe.src = `https://form.typeform.com/to/${01KDJRWJ1FM42RWNR2C0G3321K}`
         iframe.height = '100%';
         iframe.frameBorder = '0';
         iframe.allow = 'microphone; camera';
