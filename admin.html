@@ -183,11 +183,19 @@
         }
         
         .admin-panel {
-            display: none;
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
         }
         
         .admin-panel.active {
-            display: block;
+            display: block !important;
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .admin-panel:not(.active) {
+            display: none !important;
         }
         
         .login-input {
@@ -247,6 +255,28 @@
             display: block;
         }
     </style>
+    
+    <!-- Immediate Security Check - Runs before page renders -->
+    <script>
+        // Check authentication immediately before any content loads
+        (function() {
+            // Check if user is authenticated
+            const isAuth = sessionStorage.getItem('adminAuthenticated') === 'true';
+            
+            // If not authenticated, ensure admin panel stays hidden
+            if (!isAuth) {
+                // Prevent any admin panel content from being accessible
+                document.addEventListener('DOMContentLoaded', function() {
+                    const adminPanel = document.getElementById('adminPanel');
+                    if (adminPanel && !isAuth) {
+                        adminPanel.style.display = 'none';
+                        adminPanel.style.visibility = 'hidden';
+                        adminPanel.style.opacity = '0';
+                    }
+                });
+            }
+        })();
+    </script>
 </head>
 <body>
     <div class="admin-container">
@@ -265,16 +295,16 @@
                 <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
             </div>
             
-            <!-- Admin Panel -->
-            <div class="admin-panel" id="adminPanel">
+            <!-- Admin Panel - Hidden until authenticated -->
+            <div class="admin-panel" id="adminPanel" style="display: none !important; visibility: hidden; opacity: 0;">
                 <h1 class="admin-title">Maintenance Mode</h1>
                 <div class="admin-status" id="status">
                     <span class="status-indicator" id="statusIndicator"></span>
                     <span id="statusText">Checking status...</span>
                 </div>
                 <div class="admin-buttons">
-                    <button class="btn-toggle enable" onclick="toggleMaintenance(true)">Enable Maintenance</button>
-                    <button class="btn-toggle disable" onclick="toggleMaintenance(false)">Disable Maintenance</button>
+                    <button class="btn-toggle enable" onclick="if(!isAuthenticated()){logout();return;}toggleMaintenance(true)">Enable Maintenance</button>
+                    <button class="btn-toggle disable" onclick="if(!isAuthenticated()){logout();return;}toggleMaintenance(false)">Disable Maintenance</button>
                 </div>
                 <div class="message" id="message"></div>
                 <a href="index.html" class="btn-back">← Back to Site</a>
@@ -333,11 +363,26 @@
             }
         }
         
-        // Show admin panel
+        // Show admin panel - Only callable after authentication
         function showAdminPanel() {
-            document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('adminPanel').classList.add('active');
-            updateStatus();
+            // Double-check authentication before showing panel
+            if (!isAuthenticated()) {
+                logout();
+                return;
+            }
+            
+            const loginForm = document.getElementById('loginForm');
+            const adminPanel = document.getElementById('adminPanel');
+            
+            if (loginForm && adminPanel) {
+                loginForm.classList.remove('active');
+                adminPanel.classList.add('active');
+                // Force display styles
+                adminPanel.style.display = 'block';
+                adminPanel.style.visibility = 'visible';
+                adminPanel.style.opacity = '1';
+                updateStatus();
+            }
         }
         
         // Logout
@@ -363,6 +408,14 @@
             if (isAuthenticated()) {
                 showAdminPanel();
             } else {
+                // Ensure admin panel is hidden
+                const adminPanel = document.getElementById('adminPanel');
+                if (adminPanel) {
+                    adminPanel.classList.remove('active');
+                    adminPanel.style.display = 'none';
+                    adminPanel.style.visibility = 'hidden';
+                    adminPanel.style.opacity = '0';
+                }
                 passwordInput.focus();
             }
         });
@@ -382,6 +435,13 @@
         }
         
         function toggleMaintenance(enabled) {
+            // Security check - prevent unauthorized access
+            if (!isAuthenticated()) {
+                logout();
+                alert('Session expired. Please log in again.');
+                return;
+            }
+            
             localStorage.setItem('maintenanceMode', enabled ? 'true' : 'false');
             updateStatus();
             
@@ -400,6 +460,16 @@
                 message.textContent = '';
             }, 3000);
         }
+        
+        // Security: Check authentication periodically
+        setInterval(function() {
+            const adminPanel = document.getElementById('adminPanel');
+            if (adminPanel && adminPanel.classList.contains('active')) {
+                if (!isAuthenticated()) {
+                    logout();
+                }
+            }
+        }, 5000); // Check every 5 seconds
     </script>
 </body>
 </html>
