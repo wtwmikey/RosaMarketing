@@ -173,6 +173,79 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
             display: block;
         }
+        
+        .login-form {
+            display: none;
+        }
+        
+        .login-form.active {
+            display: block;
+        }
+        
+        .admin-panel {
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: block;
+        }
+        
+        .login-input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 1rem;
+            background-color: var(--bg-dark-tertiary);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: var(--accent-red);
+        }
+        
+        .login-input::placeholder {
+            color: var(--text-gray-light);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--accent-red);
+            color: var(--text-white);
+        }
+        
+        .btn-login:hover {
+            background-color: var(--accent-red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .login-error {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            display: none;
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .login-error.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -182,21 +255,118 @@
             <div class="admin-logo">
                 <img src="Images/Logo/logo.png" alt="Rosa Marketing">
             </div>
-            <h1 class="admin-title">Maintenance Mode</h1>
-            <div class="admin-status" id="status">
-                <span class="status-indicator" id="statusIndicator"></span>
-                <span id="statusText">Checking status...</span>
+            
+            <!-- Login Form -->
+            <div class="login-form active" id="loginForm">
+                <h1 class="admin-title">Admin Access</h1>
+                <p style="color: var(--text-gray); margin-bottom: 2rem;">Enter password to access maintenance controls</p>
+                <input type="password" id="passwordInput" class="login-input" placeholder="Enter admin password" autocomplete="off">
+                <button class="btn-login" onclick="checkPassword()">Access Admin Panel</button>
+                <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
             </div>
-            <div class="admin-buttons">
-                <button class="btn-toggle enable" onclick="toggleMaintenance(true)">Enable Maintenance</button>
-                <button class="btn-toggle disable" onclick="toggleMaintenance(false)">Disable Maintenance</button>
+            
+            <!-- Admin Panel -->
+            <div class="admin-panel" id="adminPanel">
+                <h1 class="admin-title">Maintenance Mode</h1>
+                <div class="admin-status" id="status">
+                    <span class="status-indicator" id="statusIndicator"></span>
+                    <span id="statusText">Checking status...</span>
+                </div>
+                <div class="admin-buttons">
+                    <button class="btn-toggle enable" onclick="toggleMaintenance(true)">Enable Maintenance</button>
+                    <button class="btn-toggle disable" onclick="toggleMaintenance(false)">Disable Maintenance</button>
+                </div>
+                <div class="message" id="message"></div>
+                <a href="index.html" class="btn-back">← Back to Site</a>
+                <button class="btn-back" onclick="logout()" style="margin-top: 1rem; background: none; border: none; cursor: pointer;">Logout</button>
             </div>
-            <div class="message" id="message"></div>
-            <a href="index.html" class="btn-back">← Back to Site</a>
         </div>
     </div>
     
     <script>
+        // Admin password - Change this to your desired password
+        // For better security, you can use a hash of your password
+        const ADMIN_PASSWORD = 'admin123'; // CHANGE THIS PASSWORD!
+        
+        // Simple hash function for password (optional - you can use plain text too)
+        function hashPassword(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return hash.toString();
+        }
+        
+        // Check if user is authenticated
+        function isAuthenticated() {
+            return sessionStorage.getItem('adminAuthenticated') === 'true';
+        }
+        
+        // Set authentication status
+        function setAuthenticated(status) {
+            sessionStorage.setItem('adminAuthenticated', status ? 'true' : 'false');
+        }
+        
+        // Check password and authenticate
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const loginError = document.getElementById('loginError');
+            const password = passwordInput.value;
+            
+            // Simple password check (you can use hashPassword(password) === hashPassword(ADMIN_PASSWORD) for hashed comparison)
+            if (password === ADMIN_PASSWORD) {
+                setAuthenticated(true);
+                showAdminPanel();
+                passwordInput.value = '';
+                loginError.classList.remove('active');
+            } else {
+                loginError.classList.add('active');
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Clear error after 3 seconds
+                setTimeout(() => {
+                    loginError.classList.remove('active');
+                }, 3000);
+            }
+        }
+        
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('adminPanel').classList.add('active');
+            updateStatus();
+        }
+        
+        // Logout
+        function logout() {
+            setAuthenticated(false);
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('adminPanel').classList.remove('active');
+            document.getElementById('passwordInput').focus();
+        }
+        
+        // Allow Enter key to submit password
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('passwordInput');
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+            
+            // Check if already authenticated
+            if (isAuthenticated()) {
+                showAdminPanel();
+            } else {
+                passwordInput.focus();
+            }
+        });
+        
         function updateStatus() {
             const maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
             const statusIndicator = document.getElementById('statusIndicator');
@@ -230,9 +400,6 @@
                 message.textContent = '';
             }, 3000);
         }
-        
-        // Update status on page load
-        updateStatus();
     </script>
 </body>
 </html>
