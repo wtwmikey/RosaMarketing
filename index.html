@@ -18,19 +18,33 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Maintenance API - For cross-device persistence -->
+    <script src="maintenance-api.js"></script>
+    
     <!-- Maintenance Mode Check - Runs immediately before page loads -->
     <script>
-        (function() {
+        (async function() {
             // Don't redirect if we're on maintenance or admin pages
             const currentPath = window.location.pathname;
             if (currentPath.includes('maintenance.html') || currentPath.includes('admin.html')) {
                 return;
             }
             
-            // Check maintenance mode status from localStorage
-            const maintenanceMode = localStorage.getItem('maintenanceMode');
+            // Check maintenance mode status (remote first, then localStorage)
+            let maintenanceMode = false;
             
-            if (maintenanceMode === 'true') {
+            if (typeof getMaintenanceStatus === 'function') {
+                try {
+                    maintenanceMode = await getMaintenanceStatus();
+                } catch (error) {
+                    // Fallback to localStorage
+                    maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+                }
+            } else {
+                maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+            }
+            
+            if (maintenanceMode) {
                 // Redirect to maintenance page immediately
                 window.location.replace('maintenance.html');
             }

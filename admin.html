@@ -18,6 +18,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Maintenance API - For cross-device persistence -->
+    <script src="maintenance-api.js"></script>
+    
     <style>
         .admin-container {
             min-height: 100vh;
@@ -420,8 +423,21 @@
             }
         });
         
-        function updateStatus() {
-            const maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+        async function updateStatus() {
+            // Check remote status first, then fallback to localStorage
+            let maintenanceMode = false;
+            
+            if (typeof getMaintenanceStatus === 'function') {
+                try {
+                    maintenanceMode = await getMaintenanceStatus();
+                } catch (error) {
+                    // Fallback to localStorage
+                    maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+                }
+            } else {
+                maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+            }
+            
             const statusIndicator = document.getElementById('statusIndicator');
             const statusText = document.getElementById('statusText');
             
@@ -434,7 +450,7 @@
             }
         }
         
-        function toggleMaintenance(enabled) {
+        async function toggleMaintenance(enabled) {
             // Security check - prevent unauthorized access
             if (!isAuthenticated()) {
                 logout();
@@ -442,8 +458,19 @@
                 return;
             }
             
-            localStorage.setItem('maintenanceMode', enabled ? 'true' : 'false');
-            updateStatus();
+            // Update remote storage if available, otherwise use localStorage
+            if (typeof setMaintenanceStatus === 'function') {
+                try {
+                    await setMaintenanceStatus(enabled);
+                } catch (error) {
+                    console.warn('Failed to update remote storage, using localStorage:', error);
+                    localStorage.setItem('maintenanceMode', enabled ? 'true' : 'false');
+                }
+            } else {
+                localStorage.setItem('maintenanceMode', enabled ? 'true' : 'false');
+            }
+            
+            await updateStatus();
             
             const message = document.getElementById('message');
             if (enabled) {

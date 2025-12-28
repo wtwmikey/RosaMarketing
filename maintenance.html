@@ -18,6 +18,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Maintenance API - For cross-device persistence -->
+    <script src="maintenance-api.js"></script>
+    
     <style>
         .maintenance-container {
             min-height: 100vh;
@@ -168,11 +171,23 @@
     <script>
         // Check if maintenance mode is still enabled
         // If disabled, redirect back to main site
-        (function() {
-            function checkMaintenanceStatus() {
-                const maintenanceMode = localStorage.getItem('maintenanceMode');
+        (async function() {
+            async function checkMaintenanceStatus() {
+                let maintenanceMode = false;
                 
-                if (maintenanceMode !== 'true') {
+                // Check remote status first, then fallback to localStorage
+                if (typeof getMaintenanceStatus === 'function') {
+                    try {
+                        maintenanceMode = await getMaintenanceStatus();
+                    } catch (error) {
+                        // Fallback to localStorage
+                        maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+                    }
+                } else {
+                    maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+                }
+                
+                if (!maintenanceMode) {
                     // Maintenance mode is off, redirect to main site
                     window.location.replace('index.html');
                 } else {
@@ -187,7 +202,7 @@
             }
             
             // Check immediately
-            checkMaintenanceStatus();
+            await checkMaintenanceStatus();
             
             // Check every 5 seconds to see if maintenance mode was disabled
             setInterval(checkMaintenanceStatus, 5000);
