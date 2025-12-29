@@ -1,0 +1,10 @@
+{
+  "name": "leadbndl-maintenance",
+  "version": "1.0.0",
+  "description": "Maintenance Mode for LeadBndl",
+  "dependencies": {
+    "@netlify/blobs": "^2.8.0"
+  }
+}
+
+

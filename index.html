@@ -3,282 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rosa Marketing - Data-Driven Marketing Solutions</title>
-    <meta name="description" content="Empower your brand with data-driven marketing strategies. Achieve sustainable growth with Rosa Marketing.">
+    <title>LeadBNDL - Site Control</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="Images/Logo/favicon/favicon.ico">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Maintenance API - For cross-device persistence -->
-    <script src="maintenance-api.js"></script>
-    
-    <!-- Maintenance Mode Check - Runs immediately before page loads -->
     <script>
-        (async function() {
-            // Don't redirect if we're on maintenance or admin pages
-            const currentPath = window.location.pathname;
-            if (currentPath.includes('maintenance.html') || currentPath.includes('admin.html')) {
-                return;
-            }
-            
-            // Check maintenance mode status (remote first, then localStorage)
-            let maintenanceMode = false;
-            
-            if (typeof getMaintenanceStatus === 'function') {
-                try {
-                    maintenanceMode = await getMaintenanceStatus();
-                } catch (error) {
-                    // Fallback to localStorage
-                    maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
-                }
+        // ============================================
+        // ACTIVATION CODES - Comment/Uncomment to switch
+        // ============================================
+        
+        // To activate HOME page: keep this line uncommented
+        // const ACTIVE_PAGE = 'home';
+        
+        // To activate MAINTENANCE page: comment the line above (add //) and uncomment the line below (remove //)
+        const ACTIVE_PAGE = 'maintenance';
+        
+        // ============================================
+        
+        // Redirect based on active page code
+        (function() {
+            if (ACTIVE_PAGE === 'maintenance') {
+                window.location.href = 'maintenance.html';
             } else {
-                maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
-            }
-            
-            if (maintenanceMode) {
-                // Redirect to maintenance page immediately
-                window.location.replace('maintenance.html');
+                window.location.href = 'home.html';
             }
         })();
     </script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-container">
-                <a href="index.html" class="nav-logo">
-                    <img src="Images/Logo/logo.png" alt="Rosa Marketing" class="logo-image">
-                </a>
-                <a href="apply.html" class="btn btn-primary nav-apply-btn">Apply Now</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-grid-overlay"></div>
-        <div class="hero-gradient"></div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-wrapper">
-                    <div class="hero-text">
-                        <h1 class="hero-title">
-                            <span class="hero-title-line-1">Empower Your Brand.</span>
-                            <span class="hero-title-line-2">Achieve Sustainable Growth with Data-Driven Strategies.</span>
-                        </h1>
-                        <p class="hero-description">
-                            Unlock the full potential of your brand with data-driven insights and powerful tools designed to streamline your marketing efforts. Whether you're growing your audience or driving conversions, we have everything you need to succeed.
-                        </p>
-                        <div class="hero-cta">
-                            <a href="apply.html" class="btn btn-primary">Apply Today</a>
-                            <a href="#services" class="btn btn-link">Learn more →</a>
-                        </div>
-                    </div>
-                    <div class="hero-images">
-                        <img src="https://via.placeholder.com/600x400/1a1a1a/cccccc?text=Marketing+Dashboard" alt="Marketing Dashboard" class="hero-image hero-image-1">
-                        <img src="https://via.placeholder.com/500x350/1a1a1a/cccccc?text=Analytics+Data" alt="Analytics Data" class="hero-image hero-image-2">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="hero-footer">
-            <p class="copyright">© 2024 Rosa Marketing, All rights reserved.</p>
-            <a href="#" class="social-icon" aria-label="Instagram">
-                <span class="material-icons">instagram</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Clients Section -->
-    <section class="clients-section">
-        <div class="container">
-            <h2 class="clients-headline">Join the ranks of the numerous businesses we've helped achieve consistent growth</h2>
-            <div class="clients-logos">
-                <div class="client-logo">JUVENILE</div>
-                <div class="client-logo client-logo-icon">○</div>
-                <div class="client-logo">deviantbyloho</div>
-                <div class="client-logo">DEFERENTIAL</div>
-                <div class="client-logo">heaven sent</div>
-            </div>
-            <p class="clients-more">... and many more</p>
-        </div>
-    </section>
-
-    <!-- Services Introduction Section -->
-    <section class="services-intro">
-        <div class="container">
-            <p class="section-tag red-text">Connect with real people</p>
-            <h2 class="section-title">All the tools you need to grow your brand</h2>
-            <p class="section-description">
-                From strategy to analytics, we offer everything you need to boost engagement, drive conversions, and expand your brand's reach.
-            </p>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-icons">video_library</span>
-                    </div>
-                    <h3>Tiktok Ads</h3>
-                    <p>Leverage TikTok's powerful algorithm to reach a highly engaged audience with creative, short-form video ads that capture attention and drive conversions.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-icons">campaign</span>
-                    </div>
-                    <h3>Facebook Campaigns</h3>
-                    <p>Create targeted campaigns on Facebook that connect with the right audience, increasing engagement and driving measurable results for your brand.</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <span class="material-icons">email</span>
-                    </div>
-                    <h3>Email and SMS</h3>
-                    <p>Reach your audience directly through personalized email and SMS campaigns that drive engagement, increase conversions, and nurture customer relationships.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Growth Section -->
-    <section class="growth-section">
-        <div class="container">
-            <p class="section-tag red-text">Everything you need</p>
-            <h2 class="section-title">Real and consistent growth</h2>
-            <p class="section-description">
-                Unlock your brand's full potential with tailored strategies that drive sustainable growth. From increasing engagement to improving ROI, we provide the tools and expertise to help you succeed in a competitive digital landscape.
-            </p>
-        </div>
-    </section>
-
-    <!-- Results Section -->
-    <section class="results-section">
-        <div class="container">
-            <h2 class="results-headline">Generating an extra $100k in revenue? That's our specialty!</h2>
-            <div class="data-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Amount spent <span class="material-icons">expand_more</span></th>
-                            <th>Purchase ROAS (return on ad spend) <span class="material-icons">expand_more</span></th>
-                            <th>Purchases conversion value <span class="material-icons">expand_more</span></th>
-                            <th>Results <span class="material-icons">info</span> <span class="sub-header">Website purchases</span></th>
-                            <th>Cost per result <span class="sub-header">Per Purchase</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>$75.00</td>
-                            <td>—</td>
-                            <td>$0.00</td>
-                            <td>—</td>
-                            <td>—</td>
-                        </tr>
-                        <tr>
-                            <td>$875.50</td>
-                            <td>5.68 [2]</td>
-                            <td>$4,972.00 [2]</td>
-                            <td>54 [2]</td>
-                            <td>$16.21 [2]</td>
-                        </tr>
-                        <tr>
-                            <td>$1,560.00</td>
-                            <td>11.43 [2]</td>
-                            <td>$17,830.80 [2]</td>
-                            <td>182 [2]</td>
-                            <td>$8.58 [2]</td>
-                        </tr>
-                        <tr>
-                            <td>$180.75</td>
-                            <td>2.33 [2]</td>
-                            <td>$421.00 [2]</td>
-                            <td>6 [2]</td>
-                            <td>$32.83 [2]</td>
-                        </tr>
-                        <tr>
-                            <td>$231.50</td>
-                            <td>3.61 [2]</td>
-                            <td>$835.50 [2]</td>
-                            <td>12 [2]</td>
-                            <td>$19.11 [2]</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><strong>$7,600.00</strong><br><span class="footer-label">Total spent</span></td>
-                            <td><strong>13.16 [2]</strong><br><span class="footer-label">Average</span></td>
-                            <td><strong>$100,000.00 [2]</strong><br><span class="footer-label">Total</span></td>
-                            <td><strong>965 [2]</strong><br><span class="footer-label">Website purchases</span></td>
-                            <td><strong>$7.88 [2]</strong><br><span class="footer-label">Per Purchase</span></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            <p class="results-footer">Consistent back-to-back months for a client!</p>
-        </div>
-    </section>
-
-    <!-- Track Record Section -->
-    <section class="track-record">
-        <div class="container">
-            <p class="section-tag orange-text">Our track record</p>
-            <h2 class="section-title">Trusted by over 100 reputable brands worldwide</h2>
-            <p class="section-description">
-                We've worked with numerous brands to help them achieve their goals, generating over $12,000,000 in revenue.
-            </p>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">$12M+</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">2,000+</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100+</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">5x+</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Apply Section -->
-    <section id="apply" class="apply-section">
-        <div class="container">
-            <h2 class="apply-headline">Ready to get started?</h2>
-            <a href="apply.html" class="btn btn-primary btn-large">Apply Now</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 Rosa Marketing, All rights reserved.</p>
-                <a href="#" class="social-icon" aria-label="Instagram">
-                    <span class="material-icons">instagram</span>
-                </a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <!-- This page redirects immediately based on ACTIVE_PAGE variable above -->
 </body>
 </html>
-

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Maintenance - Rosa Marketing</title>
-    <meta name="description" content="Rosa Marketing is currently under maintenance. We'll be back soon!">
+    <title>Under Maintenance - LeadBNDL</title>
+    <meta name="description" content="LeadBNDL is currently under maintenance. We'll be back soon!">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="Images/Logo/favicon/favicon.ico">
@@ -17,9 +17,6 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Maintenance API - For cross-device persistence -->
-    <script src="maintenance-api.js"></script>
     
     <style>
         .maintenance-container {
@@ -104,25 +101,6 @@
             font-size: 0.875rem;
         }
         
-        .admin-access-link {
-            margin-top: 2rem;
-            display: inline-block;
-            color: var(--text-gray-light);
-            text-decoration: none;
-            font-size: 0.875rem;
-            padding: 8px 16px;
-            border: 1px solid var(--border-gray);
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            opacity: 0.7;
-        }
-        
-        .admin-access-link:hover {
-            color: var(--accent-red);
-            border-color: var(--accent-red);
-            opacity: 1;
-        }
-        
         @media (max-width: 768px) {
             .maintenance-title {
                 font-size: 2rem;
@@ -143,7 +121,7 @@
         <div class="maintenance-grid-overlay"></div>
         <div class="maintenance-content">
             <div class="maintenance-logo">
-                <img src="Images/Logo/logo.png" alt="Rosa Marketing">
+                <img src="Images/Logo/logo.png" alt="LeadBNDL">
             </div>
             <div class="maintenance-icon">
                 <span class="material-icons">build</span>
@@ -153,61 +131,12 @@
                 We're currently working on improving our website to serve you better. 
                 We'll be back online shortly. Thank you for your patience!
             </p>
-            <div id="status-check" style="margin-top: 2rem; padding: 1rem; background-color: var(--bg-dark-secondary); border-radius: 8px; display: none;">
-                <p style="color: var(--text-gray); font-size: 0.875rem; margin: 0;">
-                    <span id="status-text">Checking site status...</span>
-                </p>
-            </div>
             <div class="maintenance-footer">
-                <p>&copy; 2024 Rosa Marketing, All rights reserved.</p>
-                <a href="admin.html" class="admin-access-link">
-                    <span class="material-icons" style="font-size: 1rem; vertical-align: middle; margin-right: 4px;">admin_panel_settings</span>
-                    Admin Access
-                </a>
+                <p>&copy; 2024 LeadBNDL, All rights reserved.</p>
             </div>
         </div>
     </div>
     
-    <script>
-        // Check if maintenance mode is still enabled
-        // If disabled, redirect back to main site
-        (async function() {
-            async function checkMaintenanceStatus() {
-                let maintenanceMode = false;
-                
-                // Check remote status first, then fallback to localStorage
-                if (typeof getMaintenanceStatus === 'function') {
-                    try {
-                        maintenanceMode = await getMaintenanceStatus();
-                    } catch (error) {
-                        // Fallback to localStorage
-                        maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
-                    }
-                } else {
-                    maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
-                }
-                
-                if (!maintenanceMode) {
-                    // Maintenance mode is off, redirect to main site
-                    window.location.replace('index.html');
-                } else {
-                    // Show status indicator
-                    const statusCheck = document.getElementById('status-check');
-                    const statusText = document.getElementById('status-text');
-                    if (statusCheck && statusText) {
-                        statusCheck.style.display = 'block';
-                        statusText.textContent = 'Maintenance mode is active. The site will be live once maintenance is disabled.';
-                    }
-                }
-            }
-            
-            // Check immediately
-            await checkMaintenanceStatus();
-            
-            // Check every 5 seconds to see if maintenance mode was disabled
-            setInterval(checkMaintenanceStatus, 5000);
-        })();
-    </script>
 </body>
 </html>
 

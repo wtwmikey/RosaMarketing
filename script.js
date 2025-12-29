@@ -1,21 +1,3 @@
-// Maintenance Mode Check (backup - primary check is in <head> of each page)
-// This runs as a backup check in case the inline script didn't catch it
-(function() {
-    // Don't redirect if we're on maintenance or admin pages
-    const currentPath = window.location.pathname;
-    if (currentPath.includes('maintenance.html') || currentPath.includes('admin.html')) {
-        return;
-    }
-    
-    // Check maintenance mode status from localStorage
-    const maintenanceMode = localStorage.getItem('maintenanceMode');
-    
-    if (maintenanceMode === 'true') {
-        // Redirect to maintenance page
-        window.location.replace('maintenance.html');
-        return;
-    }
-})();
 
 // DOM Content Loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -150,29 +132,4 @@ function initScrollProgress() {
 // Initialize scroll progress
 document.addEventListener('DOMContentLoaded', initScrollProgress);
 
-// Maintenance Mode Toggle Helper
-// Use these functions in the browser console to toggle maintenance mode:
-// 
-// Enable maintenance mode:
-//   toggleMaintenanceMode(true)
-// 
-// Disable maintenance mode:
-//   toggleMaintenanceMode(false)
-//
-// Check current status:
-//   isMaintenanceMode()
-window.toggleMaintenanceMode = function(enabled) {
-    if (enabled) {
-        localStorage.setItem('maintenanceMode', 'true');
-        console.log('Maintenance mode ENABLED. Refresh the page to see the maintenance page.');
-    } else {
-        localStorage.setItem('maintenanceMode', 'false');
-        console.log('Maintenance mode DISABLED. Refresh the page to see the normal site.');
-    }
-};
-
-window.isMaintenanceMode = function() {
-    const status = localStorage.getItem('maintenanceMode');
-    return status === 'true';
-};
 
